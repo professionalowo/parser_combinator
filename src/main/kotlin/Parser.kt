@@ -40,6 +40,8 @@ class OrParser<P1, P2, U, V>(private val p1: Parser<U>, private val p2: Parser<V
 
 infix fun <V, U> Parser<V>.and(other: Parser<U>) = AndParser(this, other)
 
+infix fun <V> Parser<List<V>>.andList(other: Parser<V>) = AndParser(this, other).map { it.first + it.second }
+
 class AndParser<P1, P2, U, V>(private val p1: Parser<U>, private val p2: Parser<V>) :
     Parser<Pair<U, V>> where P1 : Parser<U>, P2 : Parser<V> {
     override fun parse(value: String): Result<Pair<Pair<U, V>, String>> =
